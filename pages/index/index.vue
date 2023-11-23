@@ -17,35 +17,67 @@
         <van-tab v-for="item in channelList" :key="item.id" :title="item.name" />
     </van-tabs>
     <!-- 视频列表 -->
-    <div class="video-list">
-        <NuxtLink class="v-card" v-for="item in videoList" :key="item.aid" to="">
-            <div class="card">
-                <div class="card-img">
-                    <img class="pic" :src="imgURL + item.pic" :alt="item.title" />
+    <van-list v-model:loading="loading" :finished="finished" finished-text="去 bilibili App 看更多" @load="onLoad">
+        <div class="video-list">
+
+            <NuxtLink class="v-card" v-for="item in list" :key="item.aid" to="">
+                <div class="card">
+                    <div class="card-img">
+                        <img class="pic" :src="imgURL + item.pic" :alt="item.title" />
+                    </div>
+                    <div class="count">
+                        <span>
+                            <i class="iconfont icon_shipin_bofangshu"></i>
+                            {{ item.stat.view }}
+                        </span>
+                        <span>
+                            <i class="iconfont icon_shipin_danmushu"></i>
+                            {{ item.stat.danmaku }}
+                        </span>
+                    </div>
                 </div>
-                <div class="count">
-                    <span>
-                        <i class="iconfont icon_shipin_bofangshu"></i>
-                        {{ item.stat.view }}
-                    </span>
-                    <span>
-                        <i class="iconfont icon_shipin_danmushu"></i>
-                        {{ item.stat.danmaku }}
-                    </span>
-                </div>
-            </div>
-            <p class="title">{{ item.title }}</p>
-        </NuxtLink>
-    </div>
+                <p class="title">{{ item.title }}</p>
+            </NuxtLink>
+        </div>
+    </van-list>
 </template>
 <script setup lang="ts">
+// 引入Api
 import { useFetch } from 'nuxt/app';
+// 防止图片加载不出来
 let imgURL = ref('//images.weserv.nl/?url=')
+// 获取tab栏列表
 const { data: channelList } = await useFetch('/api/channel')
 
+// 获取视频列表数据
 const { data: videoList } = await useFetch('/api/video')
-console.log(videoList);
-console.log(channelList);
+// 显示的列表
+const list = ref<any>([])
+// 加载状态
+const loading = ref(false)
+// 是否加载完成
+const finished = ref(false)
+// 滚动触底出发
+
+// 页码
+let page = 1
+// 页数
+let pageSize = 20
+const onLoad = () => {
+    // 表示正在加载
+    loading.value = false
+    const data = videoList.value?.slice((page - 1) * pageSize, page * pageSize) as any
+    console.log('滚动触底')
+    list.value.push(...data)
+    // 页码累加
+    page++
+    if (videoList.value?.length === list.value.length) {
+        finished.value = true
+    }
+}
+
+// 初始化加载-主动请求前20条数据,用于首屏渲染,方便SEO
+onLoad()
 </script>
 
 <style lang="scss" scoped>
