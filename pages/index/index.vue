@@ -19,7 +19,6 @@
     <!-- 视频列表 -->
     <van-list v-model:loading="loading" :finished="finished" finished-text="去 bilibili App 看更多" @load="onLoad">
         <div class="video-list">
-
             <NuxtLink class="v-card" v-for="item in list" :key="item.aid" to="">
                 <div class="card">
                     <div class="card-img">
@@ -44,6 +43,7 @@
 <script setup lang="ts">
 // 引入Api
 import { useFetch } from 'nuxt/app';
+import type { VideoItem } from '@/types/video'
 // 防止图片加载不出来
 let imgURL = ref('//images.weserv.nl/?url=')
 // 获取tab栏列表
@@ -51,8 +51,9 @@ const { data: channelList } = await useFetch('/api/channel')
 
 // 获取视频列表数据
 const { data: videoList } = await useFetch('/api/video')
+console.log(videoList);
 // 显示的列表
-const list = ref<any>([])
+const list = ref<VideoItem[]>([])
 // 加载状态
 const loading = ref(false)
 // 是否加载完成
@@ -66,8 +67,7 @@ let pageSize = 20
 const onLoad = () => {
     // 表示正在加载
     loading.value = false
-    const data = videoList.value?.slice((page - 1) * pageSize, page * pageSize) as any
-    console.log('滚动触底')
+    const data = videoList.value?.slice((page - 1) * pageSize, page * pageSize) as VideoItem[]
     list.value.push(...data)
     // 页码累加
     page++
