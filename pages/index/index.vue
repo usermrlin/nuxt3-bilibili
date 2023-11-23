@@ -18,29 +18,33 @@
     </van-tabs>
     <!-- 视频列表 -->
     <div class="video-list">
-        <NuxtLink class="v-card" v-for="item in 20" :key="item" :to="`/video/0`">
+        <NuxtLink class="v-card" v-for="item in videoList" :key="item.aid" to="">
             <div class="card">
                 <div class="card-img">
-                    <img class="pic" src="@/assets/images/loading.png" alt="当你觉得扛不住的时候来看看这段视频" />
+                    <img class="pic" :src="imgURL + item.pic" :alt="item.title" />
                 </div>
                 <div class="count">
                     <span>
                         <i class="iconfont icon_shipin_bofangshu"></i>
-                        676.2万
+                        {{ item.stat.view }}
                     </span>
                     <span>
                         <i class="iconfont icon_shipin_danmushu"></i>
-                        1.6万
+                        {{ item.stat.danmaku }}
                     </span>
                 </div>
             </div>
-            <p class="title">当你觉得扛不住的时候来看看这段视频</p>
+            <p class="title">{{ item.title }}</p>
         </NuxtLink>
     </div>
 </template>
 <script setup lang="ts">
 import { useFetch } from 'nuxt/app';
+let imgURL = ref('//images.weserv.nl/?url=')
 const { data: channelList } = await useFetch('/api/channel')
+
+const { data: videoList } = await useFetch('/api/video')
+console.log(videoList);
 console.log(channelList);
 </script>
 
