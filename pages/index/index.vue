@@ -1,17 +1,6 @@
 <template>
     <!-- 公共头部 -->
-    <header class="app-header">
-        <NuxtLink class="logo" to="/">
-            <i class="iconfont Navbar_logo"></i>
-        </NuxtLink>
-        <a class="search" href="#">
-            <i class="iconfont ic_search_tab"></i>
-        </a>
-        <a class="face" href="#">
-            <img src="@/assets/images/login.png" />
-        </a>
-        <div class="down-app">下载 APP</div>
-    </header>
+    <AppHeader />
     <!-- 频道模块 -->
     <van-tabs>
         <van-tab v-for="item in channelList" :key="item.id" :title="item.name" />
@@ -19,7 +8,8 @@
     <!-- 视频列表 -->
     <van-list v-model:loading="loading" :finished="finished" finished-text="去 bilibili App 看更多" @load="onLoad">
         <div class="video-list">
-            <NuxtLink class="v-card" v-for="item in list" :key="item.aid" :to="`/video/${item.bvid}`">
+            <!-- <AppVideo v-for="item in list" :key="item.bvid" :item="item"></AppVideo> -->
+            <NuxtLink class="v-card" v-for="item in videoList" :key="item.aid" :to="`/video/${item.bvid}`">
                 <div class="card">
                     <div class="card-img">
                         <img class="pic" :src="imgURL + item.pic" :alt="item.title" />
@@ -42,10 +32,11 @@
 </template>
 <script setup lang="ts">
 // 引入Api
-import { useFetch } from 'nuxt/app';
-import type { VideoItem } from '@/types/video'
 // 防止图片加载不出来
 let imgURL = ref('//images.weserv.nl/?url=')
+import { useFetch } from 'nuxt/app';
+import type { VideoItem } from '@/types/video'
+
 // 获取tab栏列表
 const { data: channelList } = await useFetch('/api/channel')
 
@@ -80,52 +71,6 @@ onLoad()
 </script>
 
 <style lang="scss" scoped>
-// 公共头部
-.app-header {
-    display: flex;
-    align-items: center;
-    padding: 8px 12px;
-    background-color: #fff;
-
-    .logo {
-        flex: 1;
-
-        .Navbar_logo {
-            color: #fb7299;
-            font-size: 28px;
-        }
-    }
-
-    .search {
-        padding: 0 8px;
-
-        .ic_search_tab {
-            color: #ccc;
-            font-size: 22px;
-        }
-    }
-
-    .face {
-        padding: 0 15px;
-
-        img {
-            width: 24px;
-            height: 24px;
-        }
-    }
-
-    .down-app {
-        font-size: 12px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: #fb7299;
-        color: #fff;
-        border-radius: 5px;
-        padding: 5px 10px;
-    }
-}
-
 // 视频列表
 .video-list {
     display: flex;
@@ -135,7 +80,7 @@ onLoad()
 
 // 视频卡片
 .v-card {
-    width: 50%;
+    width: 50% !important;
     padding: 0 5px 10px;
 
     .card {
