@@ -14,7 +14,7 @@
     </header>
     <!-- 频道模块 -->
     <van-tabs>
-        <van-tab v-for="item in 10" :key="item" title="频道" />
+        <van-tab v-for="item in channelList" :key="item.id" :title="item.name" />
     </van-tabs>
     <!-- 视频列表 -->
     <div class="video-list">
@@ -39,7 +39,9 @@
     </div>
 </template>
 <script setup lang="ts">
-
+import { useFetch } from 'nuxt/app';
+const { data: channelList } = await useFetch('/api/channel')
+console.log(channelList);
 </script>
 
 <style lang="scss" scoped>
