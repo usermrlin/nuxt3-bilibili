@@ -19,7 +19,7 @@
     <!-- 视频列表 -->
     <van-list v-model:loading="loading" :finished="finished" finished-text="去 bilibili App 看更多" @load="onLoad">
         <div class="video-list">
-            <NuxtLink class="v-card" v-for="item in list" :key="item.aid" to="">
+            <NuxtLink class="v-card" v-for="item in list" :key="item.aid" :to="`/video/${item.bvid}`">
                 <div class="card">
                     <div class="card-img">
                         <img class="pic" :src="imgURL + item.pic" :alt="item.title" />
@@ -51,7 +51,6 @@ const { data: channelList } = await useFetch('/api/channel')
 
 // 获取视频列表数据
 const { data: videoList } = await useFetch('/api/video')
-console.log(videoList);
 // 显示的列表
 const list = ref<VideoItem[]>([])
 // 加载状态
