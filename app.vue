@@ -1,6 +1,7 @@
 <template>
   <div>
-    <NuxtPage></NuxtPage>
+    <!-- 对页面进行缓存10级页面 -->
+    <NuxtPage :keepalive="{ max: 10 }"></NuxtPage>
   </div>
 </template>
 <script>
