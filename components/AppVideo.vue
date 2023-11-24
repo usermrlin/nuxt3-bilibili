@@ -1,31 +1,29 @@
 <template>
-    <div>
-        <NuxtLink class="v-card" :to="`/video/${item.bvid}`">
-            <div class="card">
-                <div class="card-img">
-                    <img class="pic" :src="imgURL + item.pic" :alt="item.title" />
-                </div>
-                <div class="count">
-                    <span>
-                        <i class="iconfont icon_shipin_bofangshu"></i>
-                        {{ item.stat.view }}
-                    </span>
-                    <span>
-                        <i class="iconfont icon_shipin_danmushu"></i>
-                        {{ item.stat.danmaku }}
-                    </span>
-                </div>
+    <NuxtLink class="v-card" :to="`/video/${item.bvid}`">
+        <div class="card">
+            <div class="card-img">
+                <img class="pic" :src="imgURL + item.pic" :alt="item.title" />
             </div>
-            <p class="title">{{ item.title }}</p>
-        </NuxtLink>
-    </div>
+            <div class="count">
+                <span>
+                    <i class="iconfont icon_shipin_bofangshu"></i>
+                    {{ item.stat.view }}
+                </span>
+                <span>
+                    <i class="iconfont icon_shipin_danmushu"></i>
+                    {{ item.stat.danmaku }}
+                </span>
+            </div>
+        </div>
+        <p class="title">{{ item.title }}</p>
+    </NuxtLink>
 </template>
 
 <script setup lang="ts">
-import type { videoItem } from '@/types/video'
+import type { VideoItem } from '@/types/video'
 import { defineProps } from 'vue'
 defineProps<{
-    item: videoItem
+    item: VideoItem
 }>()
 // 防止图片加载不出来
 let imgURL = ref('//images.weserv.nl/?url=')
