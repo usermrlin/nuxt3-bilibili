@@ -4,9 +4,9 @@
         <NuxtLink class="logo" to="/">
             <i class="iconfont Navbar_logo"></i>
         </NuxtLink>
-        <a class="search" href="#">
+        <NuxtLink class="search" to="/search">
             <i class="iconfont ic_search_tab"></i>
-        </a>
+        </NuxtLink>
         <a class="face" href="#">
             <img src="@/assets/images/login.png" />
         </a>

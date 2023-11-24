@@ -20,5 +20,6 @@ useSeoMeta({
   --van-primary-color: #fb7299 !important;
   --van-back-top-background: #fbfbfb !important;
   --van-back-top-text-color: #666 !important;
+  --van-search-action-text-color: #fb7299 !important;
 }
 </style>
